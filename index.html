@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>歡迎來到冒險者公會</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+:root{
+  --outer:#e9dcc0; --bg:#fbf3df; --panel:#fffaf0; --ink:#2a2140; --muted:#7c7090;
+  --line:#dccaa2; --gold:#b9831c; --gold-soft:#f5dfa8; --rose:#d4587c; --teal:#2f8f86;
+  --btn:#2a2140; --btn-ink:#fbf3df; --chip:#f3e7c9;
+  --pixel:"DotGothic16","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --outer:#0d0a1c; --bg:#1a1535; --panel:#241e47; --ink:#f1ebff; --muted:#a79fcb;
+    --line:#3c3470; --gold:#f0c35a; --gold-soft:#4a3d1c; --rose:#ff86a8; --teal:#5fd0c4;
+    --btn:#f0c35a; --btn-ink:#1a1535; --chip:#2f2860;
+  }
+}
+:root[data-theme="dark"]{
+  --outer:#0d0a1c; --bg:#1a1535; --panel:#241e47; --ink:#f1ebff; --muted:#a79fcb;
+  --line:#3c3470; --gold:#f0c35a; --gold-soft:#4a3d1c; --rose:#ff86a8; --teal:#5fd0c4;
+  --btn:#f0c35a; --btn-ink:#1a1535; --chip:#2f2860;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{height:100%;margin:0;background:var(--outer);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased}
+.wrap{height:100%;display:flex;align-items:center;justify-content:center}
+.phone{position:relative;width:100%;height:100%;max-width:400px;background:var(--bg);overflow:hidden;display:flex;flex-direction:column}
+@media (min-width:520px) and (min-height:700px){
+  .phone{height:min(100%,820px);border-radius:34px;border:8px solid var(--ink);box-shadow:0 20px 50px rgba(0,0,0,.25)}
+}
+#app{flex:1;display:flex;flex-direction:column;min-height:0}
+.screen{flex:1;display:flex;flex-direction:column;min-height:0}
+.scroll{flex:1;overflow-y:auto;padding:18px 18px 24px;-webkit-overflow-scrolling:touch}
+.foot{padding:12px 18px 16px;display:flex;gap:10px;border-top:2px dashed var(--line);background:var(--bg)}
+h1,h2,h3,.pixel{font-family:var(--pixel);font-weight:400}
+button{font:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--rose);outline-offset:2px}
+
+/* buttons */
+.btn{flex:1;border:0;border-radius:6px;padding:14px 16px;font-family:var(--pixel);font-size:17px;background:var(--btn);color:var(--btn-ink);box-shadow:0 4px 0 var(--gold);transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--gold)}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.btn.ghost{flex:0 0 auto;background:transparent;color:var(--ink);border:2px solid var(--line);box-shadow:none}
+
+/* title */
+.title{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 24px;gap:14px;position:relative}
+.title .crest{font-size:64px;line-height:1}
+.title h1{font-size:34px;margin:0;letter-spacing:2px}
+.title p{margin:0;color:var(--muted);line-height:1.7}
+.title .btns{display:flex;flex-direction:column;gap:12px;width:100%;margin-top:24px}
+.blink{animation:blink 1.2s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.stars{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(2px 2px at 20% 15%,var(--gold) 50%,transparent 51%),radial-gradient(2px 2px at 80% 22%,var(--rose) 50%,transparent 51%),radial-gradient(2px 2px at 65% 80%,var(--teal) 50%,transparent 51%),radial-gradient(2px 2px at 12% 70%,var(--gold) 50%,transparent 51%),radial-gradient(2px 2px at 90% 60%,var(--gold) 50%,transparent 51%);opacity:.8}
+
+/* login */
+.sect-title{font-size:22px;margin:4px 0 6px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 16px;line-height:1.6}
+.heroes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px}
+.hero{border:2px solid var(--line);background:var(--panel);border-radius:8px;padding:16px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--ink)}
+.hero .av{font-size:38px;width:62px;height:62px;display:grid;place-items:center;border-radius:50%;background:var(--chip)}
+.hero .nm{font-family:var(--pixel);font-size:20px}
+.hero .cl{font-size:12px;color:var(--muted)}
+.hero[aria-pressed="true"]{border-color:var(--gold);background:var(--gold-soft);box-shadow:0 0 0 3px var(--gold) inset}
+
+/* hud */
+.hud{padding:12px 18px 10px;border-bottom:2px dashed var(--line);display:flex;align-items:center;gap:10px}
+.hud .av{font-size:24px;width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:var(--chip);flex:0 0 auto}
+.hud .who{flex:1;min-width:0}
+.hud .row1{display:flex;justify-content:space-between;font-family:var(--pixel);font-size:15px}
+.hud .lv{color:var(--gold)}
+.trail{display:flex;align-items:center;gap:0;margin-top:6px}
+.trail i{width:12px;height:12px;border:2px solid var(--line);background:var(--panel);transform:rotate(45deg);flex:0 0 auto}
+.trail i.done{background:var(--gold);border-color:var(--gold)}
+.trail i.now{background:var(--rose);border-color:var(--rose)}
+.trail b{flex:1;height:2px;background:var(--line)}
+.trail b.done{background:var(--gold)}
+
+/* stage */
+.stage-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.stage-head .ic{font-size:40px}
+.stage-head small{display:block;color:var(--rose);font-family:var(--pixel);font-size:14px}
+.stage-head h2{margin:2px 0 0;font-size:24px}
+.bubble{position:relative;background:var(--panel);border:2px solid var(--ink);border-radius:8px;padding:12px 14px;font-size:14px;line-height:1.7;margin-bottom:20px}
+.bubble::after{content:"";position:absolute;left:22px;top:-9px;width:14px;height:14px;background:var(--panel);border-left:2px solid var(--ink);border-top:2px solid var(--ink);transform:rotate(45deg)}
+.q{background:var(--panel);border:2px solid var(--line);border-radius:8px;padding:14px;margin-bottom:14px}
+.q-label{font-weight:700;font-size:15px;line-height:1.6;display:flex;gap:8px}
+.qn{font-family:var(--pixel);font-weight:400;color:var(--gold);flex:0 0 auto}
+.dlg{width:min(82%,300px);background:var(--panel);border:3px solid var(--ink);border-radius:10px;padding:22px 18px 18px;text-align:center;animation:pop .35s cubic-bezier(.2,1.6,.4,1)}
+.dlg-ic{font-size:36px}
+.dlg p{font-family:var(--pixel);font-size:20px;margin:8px 0 18px}
+.dlg .btn{width:100%}
+.q-hint{font-size:13px;color:var(--muted);margin:2px 0 0;padding-left:34px}
+.inp{width:100%;margin-top:10px;border:2px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);padding:11px 12px;font:inherit;font-size:16px}
+textarea.inp{min-height:88px;resize:vertical;line-height:1.6}
+.inp::placeholder{color:var(--muted);opacity:.8}
+.row{display:flex;align-items:center;gap:8px;margin-top:10px}
+.row .inp{margin-top:0}
+.rank{flex:0 0 auto;width:28px;height:28px;display:grid;place-items:center;font-family:var(--pixel);border-radius:50%;background:var(--chip);font-size:14px}
+.rank.r0{background:var(--gold);color:#2a2140}
+input[type=color]{flex:0 0 auto;width:44px;height:44px;border:2px solid var(--line);border-radius:6px;padding:2px;background:var(--bg)}
+select.inp{width:auto;flex:0 0 86px;padding:11px 6px;appearance:auto}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{position:relative;border:2px solid var(--line);background:var(--chip);color:var(--ink);border-radius:999px;padding:7px 14px;font-size:14px}
+.chip[aria-pressed="true"]{background:var(--rose);border-color:var(--rose);color:#fff}
+.chip[aria-pressed="true"]::before{content:"✦ "}
+/* 依點擊順序編號的徽章 */
+.chip .no{position:absolute;top:-7px;left:-7px;width:20px;height:20px;border-radius:50%;
+  background:var(--gold);color:#2a2140;font-family:var(--pixel);font-size:12px;
+  display:grid;place-items:center;border:2px solid var(--bg)}
+.chip.ordered[aria-pressed="true"]::before{content:none}
+.partner{display:flex;align-items:center;gap:10px}
+.partner .av{font-size:26px;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;background:var(--chip)}
+.partner .nm{font-family:var(--pixel);font-size:19px}
+/* 夥伴優點標籤 */
+.tag-row{display:flex;align-items:center;gap:6px;margin-top:8px}
+.tag-row .hash{font-family:var(--pixel);color:var(--rose);font-size:20px;flex:0 0 16px;text-align:center}
+.tag-row .inp{margin-top:0;padding:8px 10px}
+/* 勾選題 */
+.check{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:15px;cursor:pointer}
+.check input{width:22px;height:22px;margin:0;accent-color:var(--rose);cursor:pointer}
+
+/* clear overlay */
+.clear{position:absolute;inset:0;display:grid;place-items:center;background:color-mix(in srgb,var(--bg) 85%,transparent);z-index:5;animation:fade .2s}
+.clear .box{text-align:center;animation:pop .45s cubic-bezier(.2,1.6,.4,1)}
+.clear .big{font-family:var(--pixel);font-size:40px;color:var(--gold);letter-spacing:3px;text-shadow:3px 3px 0 var(--rose)}
+.clear .exp{font-family:var(--pixel);font-size:18px;margin-top:8px}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes fade{from{opacity:0}}
+
+/* summary */
+.card{background:var(--panel);border:3px solid var(--ink);border-radius:10px;overflow:hidden;margin-bottom:16px}
+.card-top{background:var(--ink);color:var(--bg);padding:18px;text-align:center}
+.card-top .av{font-size:52px}
+.card-top h2{margin:6px 0 2px;font-size:28px}
+.card-top p{margin:0;font-size:13px;opacity:.8;line-height:1.6}
+.sum-sec{padding:14px 16px;border-top:2px dashed var(--line)}
+.sum-sec h3{margin:0 0 8px;font-size:17px;color:var(--rose)}
+.sum-item{margin:0 0 10px;font-size:14px;line-height:1.6}
+.sum-item dt{color:var(--muted);font-size:12px}
+.sum-item dd{margin:0;white-space:pre-wrap;word-break:break-word}
+.sw{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:4px;border:1px solid var(--line)}
+.empty{color:var(--muted);font-style:italic}
+.toast{position:absolute;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:6px;font-size:14px;z-index:6;animation:fade .2s}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="phone" id="phone"><div id="app"></div></div></div>
+
+<script>
+const HEROES=[
+  {name:'Ｋ潤',emoji:'🐉',race:'龍族'},
+  {name:'阿杰',emoji:'⛏️',race:'矮人'},
+  {name:'咕咕',emoji:'🐱',race:'貓妖'},
+  {name:'迪迪',emoji:'🧜',race:'人魚'},
+  {name:'小芷',emoji:'🧝',race:'精靈'},
+  {name:'阿莫',emoji:'🐺',race:'狼人'}
+];
+const STAGES=[
+  {id:'s1',name:'鏡之廳',icon:'🪞',intro:'一面古老的魔鏡映出你身上不同喜好的碎片',fields:[
+    {k:'color',type:'colors',label:'你最喜歡的三個顏色，由最喜歡的開始寫'},
+    {k:'flower',type:'text',label:'最喜歡的花'},
+    {k:'animal',type:'text',label:'最喜歡的動物',ph:'我想要養這個！'},
+    {k:'hobby',type:'textarea',label:'有沒有不為人知的興趣？',hint:'如果沒有的話，那你最近喜歡上的興趣是什麼？'},
+    {k:'song',type:'text',label:'代表自己的一首歌',ph:'屬於你的主題曲'},
+    {k:'dislike',type:'text',label:'不喜歡吃的食物'},
+    {k:'flavor',type:'chips',label:'最喜歡的蛋糕口味',hint:'依喜愛順序點選，最多 3 個',opts:['巧克力','草莓','香草','咖啡','芋頭','抹茶'],other:'還有其他喜歡的口味嗎?',order:3},
+    {k:'cake',type:'chips',label:'最喜歡的蛋糕種類?',hint:'可複選',opts:['提拉米蘇','千層蛋糕','生乳蛋糕','重乳酪蛋糕','巴斯克蛋糕','瑞士捲','馬卡龍'],other:'還有其他喜歡的種類嗎?'}
+  ]},
+  {id:'s2',name:'選擇你的夥伴吧',icon:'🤝',intro:'冒險從來不是一個人的事。說說看，在你眼中，這些夥伴有什麼樣的優點呢？',fields:[{k:'p',type:'partners'}]},
+  {id:'s3',name:'搜集故事的老者',icon:'📜',intro:'營火旁坐著一位白鬍子老者，他靜靜收集著每位旅人的故事……',fields:[
+    {k:'dream',type:'textarea',label:'小時候的夢想'},
+    {k:'story',type:'textarea',label:'有沒有一個你不太會主動提起、但其實想被知道的故事?'},
+    {k:'heal',type:'textarea',label:'什麼樣的小事，最容易讓你感到療癒或開心?'}
+  ]},
+  {id:'s4',name:'老派電影院',icon:'🎞️',intro:'放映機喀啦喀啦地轉著，銀幕上播放的是你心中最愛的故事。',fields:[
+    {k:'anime',type:'ranked',label:'在你心中前三名的動畫或者漫畫',hint:'先選擇漫畫或動畫，再輸入名稱'},
+    {k:'movie',type:'list3',label:'在你心中前三名的電影'},
+    {k:'watch',type:'check',label:'你有沒有在看戀綜？',text:'有，我有在看！'},
+    {k:'show',type:'list3',label:'在你心中前三名的戀綜',ph:'戀綜名稱',showIf:'watch'}
+  ]},
+  {id:'s5',name:'愛人劇本殺',icon:'🕯️',intro:'燭光搖曳，桌上攤著一疊劇本。今晚，你想成為誰？',fields:[
+    {k:'role',type:'text',label:'最喜歡的劇本角色'},
+    {k:'fav',type:'text',label:'最喜歡的劇本'},
+    {k:'memo',type:'textarea',label:'印象最深刻的劇本'}
+  ]},
+  {id:'s6',name:'神燈精靈',icon:'🧞',intro:'你擦了擦神燈，一縷青煙升起——「說出你的願望吧！」',fields:[
+    {k:'want',type:'text',label:'如果不考慮價格，你現在最想要的東西是?'},
+    {k:'wish',type:'textarea',label:'如果精靈只能實現一個小小的願望，你會許下什麼?'},
+    {k:'place',type:'text',label:'有沒有一直想去、卻還沒去的地方?'}
+  ]}
+];
+const KEY='adventure-quest-v1';
+let S=fresh();
+function fresh(){return {screen:'title',idx:0,hero:null,a:{}}}
+function load(){try{const r=localStorage.getItem(KEY);return r?JSON.parse(r):null}catch(e){return null}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const saved=load();
+
+const $app=document.getElementById('app');
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const v=p=>S.a[p]??'';
+const heroObj=n=>HEROES.find(h=>h.name===n);
+
+function go(screen,idx){S.screen=screen;if(idx!==undefined)S.idx=idx;save();render();}
+
+function render(){
+  const f={title:rTitle,login:rLogin,stage:rStage,summary:rSummary}[S.screen];
+  $app.innerHTML=f();
+  const sc=$app.querySelector('.scroll'); if(sc) sc.scrollTop=0;
+}
+
+function rTitle(){
+  const sv=load();const hasSave=sv&&sv.hero;
+  return `<div class="screen"><div class="title"><div class="stars"></div>
+    <div class="crest">🏰</div>
+    <h1>冒險者公會</h1>
+    <p>在踏上旅程之前，<br>先讓我們認識真正的你吧。</p>
+    <div class="btns">
+      ${hasSave?`<button class="btn" data-act="continue">繼續冒險</button>
+      <button class="btn ghost" data-act="restart">重新建立角色</button>`
+      :`<button class="btn" data-act="start"><span class="blink">▶</span> 開始冒險</button>`}
+    </div>
+    </div></div>`;
+}
+
+function rLogin(){
+  return `<div class="screen"><div class="scroll">
+    <h2 class="sect-title">創造你的角色</h2>
+    <p class="sub">選擇登入的冒險者</p>
+    <div class="heroes">${HEROES.map(h=>`<button class="hero" data-hero="${esc(h.name)}" aria-pressed="${S.hero===h.name}">
+      <span class="av">${h.emoji}</span><span class="nm">${esc(h.name)}</span><span class="cl">${h.race}</span></button>`).join('')}</div>
+    <div class="q" data-q="nick"><div class="q-label"><span class="qn">✦</span><span>此暱稱的由來</span></div>
+      <textarea class="inp" data-p="nick" placeholder="這個名字是怎麼來的呢？">${esc(v('nick'))}</textarea></div>
+  </div>
+  <div class="foot"><button class="btn ghost" data-act="home">返回</button>
+  <button class="btn" data-act="toStage" ${S.hero?'':'disabled'}>登記完成</button></div></div>`;
+}
+
+function hud(){
+  const h=heroObj(S.hero);
+  let t='';
+  STAGES.forEach((s,i)=>{
+    if(i) t+=`<b class="${i<=S.idx?'done':''}"></b>`;
+    t+=`<i class="${i<S.idx?'done':i===S.idx?'now':''}" title="${esc(s.name)}"></i>`;
+  });
+  return `<div class="hud"><span class="av">${h.emoji}</span><div class="who">
+    <div class="row1"><span>${esc(h.name)}</span><span class="lv">Lv.${S.idx+1}</span></div>
+    <div class="trail" aria-label="關卡進度 ${S.idx+1} / ${STAGES.length}">${t}</div></div></div>`;
+}
+
+const NUM=['一','二','三','四','五','六'];
+function rStage(){
+  const st=STAGES[S.idx]; let qi=0;
+  const body=st.fields.map(f=>fieldHTML(st,f,()=>++qi)).join('');
+  const last=S.idx===STAGES.length-1;
+  return `<div class="screen">${hud()}<div class="scroll">
+    <div class="stage-head"><span class="ic">${st.icon}</span><div><small>第${NUM[S.idx]}關</small><h2>${esc(st.name)}</h2></div></div>
+    <div class="bubble">${esc(st.intro)}</div>
+    ${body}
+  </div>
+  <div class="foot"><button class="btn ghost" data-act="prev">上一關</button>
+  <button class="btn" data-act="next">${last?'完成冒險':'通關！'}</button></div></div>`;
+}
+
+function card(head,inner,key,at=''){return `<div class="q" data-q="${key}"${at}>${head}${inner}</div>`}
+function fieldHTML(st,f,nextQ){
+  const key=st.id+'.'+f.k;
+  const at=f.showIf?` data-show-if="${st.id}.${f.showIf}"${S.a[st.id+'.'+f.showIf]?'':' hidden'}`:'';
+  const head=()=>`<div class="q-label"><span class="qn">Q${nextQ()}</span><span>${esc(f.label)}</span></div>${f.hint?`<div class="q-hint">${esc(f.hint)}</div>`:''}`;
+  switch(f.type){
+    case 'text': return card(head(),`<input class="inp" data-p="${key}" value="${esc(v(key))}" placeholder="${esc(f.ph||'輸入你的答案…')}">`,key);
+    case 'textarea': return card(head(),`<textarea class="inp" data-p="${key}" >${esc(v(key))}</textarea>`,key);
+    case 'colors': {
+      const ex=['例：天空藍','例：奶茶色','例：薄荷綠'], def=['#7ab8e8','#c9a27e','#9fd8c0'];
+      return card(head(),[0,1,2].map(i=>`<div class="row"><span class="rank r${i}">${i+1}</span>
+        <input type="color" aria-label="第${i+1}名顏色" data-p="${key}.${i}.hex" value="${esc(v(key+'.'+i+'.hex')||def[i])}">
+        <input class="inp" data-p="${key}.${i}.name" value="${esc(v(key+'.'+i+'.name'))}" placeholder="${ex[i]}"></div>`).join(''),key);
+    }
+    case 'chips': {
+      const sel=S.a[key]||[];
+      return card(head(),`<div class="chips">${f.opts.map(o=>{
+          const n=sel.indexOf(o);
+          return `<button class="chip${f.order?' ordered':''}" data-chip="${key}" data-val="${esc(o)}" data-max="${f.order||''}" aria-pressed="${n>=0}">${f.order&&n>=0?`<span class="no">${n+1}</span>`:''}${esc(o)}</button>`;
+        }).join('')}</div>
+        <input class="inp" data-p="${key}.other" value="${esc(v(key+'.other'))}" placeholder="${esc(f.other)}">`,key);
+    }
+    case 'ranked':
+      return card(head(),[0,1,2].map(i=>{const k=`${key}.${i}`;const kind=v(k+'.kind');
+        return `<div class="row"><span class="rank r${i}">${i+1}</span>
+        <select class="inp" aria-label="第${i+1}名類型" data-p="${k}.kind">
+          <option value="" ${kind?'':'selected'}>類型</option>
+          <option ${kind==='漫畫'?'selected':''}>漫畫</option><option ${kind==='動畫'?'selected':''}>動畫</option></select>
+        <input class="inp" data-p="${k}.title" value="${esc(v(k+'.title'))}" placeholder="作品名稱"></div>`}).join(''),key);
+    case 'list3':
+      return card(head(),[0,1,2].map(i=>`<div class="row"><span class="rank r${i}">${i+1}</span>
+        <input class="inp" data-p="${key}.${i}" value="${esc(v(key+'.'+i))}" placeholder="${esc(f.ph||'電影名稱')}"></div>`).join(''),key,at);
+    case 'check':
+      return card(head(),`<label class="check"><input type="checkbox" data-p="${key}" ${S.a[key]?'checked':''}>${esc(f.text)}</label>`,key);
+    case 'partners':
+      return HEROES.filter(h=>h.name!==S.hero).map(h=>{const k=`s2.${h.name}`;nextQ();
+        return `<div class="q" data-q="${k}"><div class="partner"><span class="av">${h.emoji}</span><span class="nm">${esc(h.name)}</span></div>
+        ${[0,1,2].map(i=>`<div class="tag-row"><span class="hash">#</span>
+          <input class="inp" data-p="${k}.${i}" value="${esc(v(k+'.'+i))}" maxlength="12" aria-label="${esc(h.name)}的優點 ${i+1}"></div>`).join('')}</div>`}).join('');
+  }
+}
+
+/* ---------- 必填驗證 ---------- */
+const has=p=>String(v(p)).trim()!=='';
+function isFilled(st,f){
+  const key=st.id+'.'+f.k;
+  if(f.showIf&&!S.a[st.id+'.'+f.showIf]) return true;
+  switch(f.type){
+    case 'check': return true;
+    case 'text': case 'textarea': return has(key);
+    case 'colors': return [0,1,2].every(i=>has(`${key}.${i}.name`));
+    case 'chips':  return (S.a[key]||[]).length>0 || has(key+'.other');
+    case 'ranked': return [0,1,2].every(i=>has(`${key}.${i}.kind`)&&has(`${key}.${i}.title`));
+    case 'list3':  return [0,1,2].every(i=>has(`${key}.${i}`));
+  }
+}
+function missingKeys(){
+  const st=STAGES[S.idx];
+  if(st.id==='s2') return HEROES.filter(h=>h.name!==S.hero).map(h=>'s2.'+h.name).filter(k=>![0,1,2].some(i=>has(`${k}.${i}`)));
+  return st.fields.filter(f=>!isFilled(st,f)).map(f=>st.id+'.'+f.k);
+}
+function showDialog(msg){
+  const d=document.createElement('div');d.className='clear';
+  d.innerHTML=`<div class="dlg" role="alertdialog" aria-modal="true"><div class="dlg-ic">⚠️</div><p>${esc(msg)}</p><button class="btn" data-act="closeDlg">確定</button></div>`;
+  document.getElementById('phone').appendChild(d);
+  d.querySelector('button').focus();
+}
+
+/* ---------- summary ---------- */
+function ansText(st,f){
+  const key=st.id+'.'+f.k;
+  switch(f.type){
+    case 'text': case 'textarea': return v(key).trim();
+    case 'check': return S.a[key]?'有':'沒有';
+    case 'colors': return [0,1,2].map(i=>{const n=v(`${key}.${i}.name`).trim(),h=v(`${key}.${i}.hex`);return n||h?`${i+1}. ${n}${h?` (${h})`:''}`:''}).filter(Boolean).join('\n');
+    case 'chips': {
+      const sel=S.a[key]||[];
+      const list=f.order?sel.map((x,i)=>`${i+1}. ${x}`):sel;
+      return [...list,v(key+'.other').trim()].filter(Boolean).join('、');
+    }
+    case 'ranked': return [0,1,2].map(i=>{const t=v(`${key}.${i}.title`).trim(),k=v(`${key}.${i}.kind`);return t?`${i+1}. ${k?`【${k}】`:''}${t}`:''}).filter(Boolean).join('\n');
+    case 'list3': return [0,1,2].map(i=>{const t=v(`${key}.${i}`).trim();return t?`${i+1}. ${t}`:''}).filter(Boolean).join('\n');
+  }
+}
+function items(st){
+  if(st.id==='s2') return HEROES.filter(h=>h.name!==S.hero).map(h=>({label:`${h.name} 的優點`,
+    text:[0,1,2].map(i=>v(`s2.${h.name}.${i}`).trim()).filter(Boolean).map(t=>'#'+t).join('　')}));
+  return st.fields.filter(f=>!f.showIf||S.a[st.id+'.'+f.showIf]).map(f=>({label:f.label,text:ansText(st,f),f,st}));
+}
+function ansHTML(it){
+  if(!it.text) return `<span class="empty">（留白）</span>`;
+  if(it.f&&it.f.type==='colors'){
+    const key=it.st.id+'.'+it.f.k;
+    return [0,1,2].map(i=>{const n=v(`${key}.${i}.name`).trim(),h=v(`${key}.${i}.hex`);if(!n&&!h)return '';
+      return `${h?`<span class="sw" style="background:${esc(h)}"></span>`:''}${i+1}. ${esc(n||h)}`}).filter(Boolean).join('<br>');
+  }
+  return esc(it.text);
+}
+function rSummary(){
+  const h=heroObj(S.hero);
+  return `<div class="screen"><div class="scroll">
+    <div class="card"><div class="card-top"><div class="av">${h.emoji}</div><h2>${esc(h.name)}</h2>
+      <p>${v('nick').trim()?esc(v('nick').trim()):'名字的由來仍是個謎'}</p></div>
+      ${STAGES.map((st,i)=>`<div class="sum-sec"><h3>${st.icon} 第${NUM[i]}關・${esc(st.name)}</h3><dl>
+        ${items(st).map(it=>`<div class="sum-item"><dt>${esc(it.label)}</dt><dd>${ansHTML(it)}</dd></div>`).join('')}</dl></div>`).join('')}
+    </div></div>
+  <div class="foot"><button class="btn ghost" data-act="edit">修改</button>
+  <button class="btn ghost" data-act="copy">複製</button>
+  <button class="btn" data-act="submit">${S.sent?'重新送出':'送出答案'}</button></div></div>`;
+}
+function plain(){
+  let t=`【冒險者角色卡】\n登入者：${S.hero}\n暱稱由來：${v('nick').trim()||'（留白）'}\n`;
+  STAGES.forEach((st,i)=>{t+=`\n— 第${NUM[i]}關・${st.name} —\n`;items(st).forEach(it=>{t+=`${it.label}\n${it.text||'（留白）'}\n`})});
+  return t;
+}
+function toast(msg){const d=document.createElement('div');d.className='toast';d.textContent=msg;document.getElementById('phone').appendChild(d);setTimeout(()=>d.remove(),1600)}
+async function copy(){
+  const txt=plain();
+  try{await navigator.clipboard.writeText(txt);toast('已複製角色卡')}
+  catch(e){const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');toast('已複製角色卡')}catch(_){toast('無法複製，請手動選取')}ta.remove()}
+}
+function stageClear(done){
+  const last=S.idx===STAGES.length-1;
+  const d=document.createElement('div');d.className='clear';
+  d.innerHTML=`<div class="box"><div class="big">${last?'ALL CLEAR!':'STAGE CLEAR!'}</div><div class="exp">EXP +100　Lv.${S.idx+1} → Lv.${S.idx+2}</div></div>`;
+  document.getElementById('phone').appendChild(d);
+  setTimeout(()=>{d.remove();done()},1100);
+}
+
+/* ---------- 送出到 Google 試算表 ---------- */
+// ↓↓↓ 把 Apps Script 部署後拿到的網址貼在這裡 ↓↓↓
+const SHEET_URL='';
+let sending=false;
+// Excel 欄位順序（固定，第二關列出全部夥伴）
+function columns(){
+  const c=['冒險者','暱稱由來','送出時間'];
+  STAGES.forEach(st=>{
+    if(st.id==='s2') HEROES.forEach(h=>c.push(`${h.name} 的優點`));
+    else st.fields.forEach(f=>c.push(f.label));
+  });
+  return c;
+}
+function buildRow(){
+  const r={'冒險者':S.hero,'暱稱由來':v('nick').trim(),'送出時間':new Date().toLocaleString('zh-TW',{hour12:false})};
+  STAGES.forEach(st=>items(st).forEach(it=>{r[it.label]=it.text||''}));
+  return r;
+}
+async function submit(){
+  if(sending) return;
+  if(!SHEET_URL){toast('尚未設定試算表網址，請先按「複製」傳給主辦人');return;}
+  sending=true;
+  const r=buildRow(), cols=columns();
+  const body={hero:S.hero,cols,cells:cols.map(c=>r[c]??'')};
+  try{
+    // 用 text/plain 送出，避免瀏覽器先發 CORS 預檢請求（Apps Script 不支援）
+    const res=await fetch(SHEET_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});
+    const out=await res.json();
+    if(!out.ok) throw new Error(out.error);
+    S.sent=true;save();
+    if(S.screen==='summary'){const b=document.querySelector('[data-act="submit"]');if(b)b.textContent='重新送出'}
+    toast('答案已送出 ✦');
+  }catch(e){
+    toast('送出失敗，請再按一次');
+  }finally{sending=false}
+}
+
+/* ---------- events ---------- */
+function onField(e){
+  const t=e.target,p=t.dataset&&t.dataset.p;if(!p)return;
+  S.a[p]=t.type==='checkbox'?t.checked:t.value;save();
+  if(t.type==='checkbox') document.querySelectorAll(`[data-show-if="${p}"]`).forEach(el=>el.hidden=!t.checked);
+}
+document.addEventListener('input',onField);
+document.addEventListener('change',onField);
+document.addEventListener('click',e=>{
+  const hero=e.target.closest('[data-hero]');
+  if(hero){S.hero=hero.dataset.hero;save();
+    document.querySelectorAll('[data-hero]').forEach(b=>b.setAttribute('aria-pressed',b===hero));
+    document.querySelector('[data-act="toStage"]').disabled=false;return;}
+  const chip=e.target.closest('[data-chip]');
+  if(chip){
+    const k=chip.dataset.chip,val=chip.dataset.val,max=+chip.dataset.max||0,arr=S.a[k]||[];
+    if(max&&!arr.includes(val)&&arr.length>=max){toast(`最多只能選 ${max} 個`);return;}
+    S.a[k]=arr.includes(val)?arr.filter(x=>x!==val):[...arr,val];save();
+    document.querySelectorAll(`[data-chip="${k}"]`).forEach(b=>{
+      const n=S.a[k].indexOf(b.dataset.val);
+      b.setAttribute('aria-pressed',n>=0);
+      if(max){
+        b.querySelector('.no')?.remove();
+        if(n>=0) b.insertAdjacentHTML('afterbegin',`<span class="no">${n+1}</span>`);
+      }
+    });
+    return;
+  }
+  const act=e.target.closest('[data-act]');if(!act||act.disabled)return;
+  switch(act.dataset.act){
+    case 'start': S=fresh();go('login');break;
+    case 'continue': S=load()||fresh(); if(S.screen==='title')S.screen='login'; render();break;
+    case 'restart': try{localStorage.removeItem(KEY)}catch(_){ } S=fresh();go('login');break;
+    case 'home': go('title');break;
+    case 'toStage': if(!has('nick')){showDialog('有關卡未完成');break;} go('stage',0);break;
+    case 'prev': S.idx===0?go('login'):go('stage',S.idx-1);break;
+    case 'next': {const miss=missingKeys(); if(miss.length){showDialog('有關卡未完成');break;}} stageClear(()=>{if(S.idx===STAGES.length-1){S.sent=false;go('summary');submit()}else go('stage',S.idx+1)});break;
+    case 'edit': go('stage',0);break;
+    case 'copy': copy();break;
+    case 'submit': submit();break;
+    case 'closeDlg': act.closest('.clear').remove();break;
+  }
+});
+render();
+</script>
+</body>
+</html>
